@@ -19,27 +19,40 @@ function kwestCookies(globalOptions) {
       return next(request);
     }
 
-    var jar             = options.jar,
+    var href = request.uri.href,
+        jar  = options.jar,
+        originalCookie  = request.getHeader('cookie'),
         getCookieString = Promise.promisify(jar.getCookieString.bind(jar)),
         setCookieString = Promise.promisify(jar.setCookie.bind(jar));
 
-    return getCookieString(request.uri.href)
+
+    return Promise.resolve(originalCookie)
+      .then(function (cookie) {
+        if (cookie) {
+          return setCookieString(cookie, href);
+        }
+      })
+      .then(function () {
+        return getCookieString(href);
+      })
       .then(function (cookies) {
         request.setHeader('cookie', cookies);
         return next(request);
       })
       .then(function (response) {
         var cookiesToset = response.getHeader('set-cookie');
+        
         if (!cookiesToset) {
           return response;
         }
+
         var setCookiePromise;
         if (Array.isArray(cookiesToset)) {
           setCookiePromise = Promise.map(cookiesToset, function(cookie) {
-            return setCookieString(cookie, request.uri.href);
+            return setCookieString(cookie, href);
           });
         } else {
-          setCookiePromise = setCookieString(cookiesToset, request.uri.href);
+          setCookiePromise = setCookieString(cookiesToset, href);
         }
         return setCookiePromise.return(response);
       });
