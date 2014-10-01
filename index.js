@@ -21,20 +21,11 @@ function kwestCookies(globalOptions) {
 
     var href = request.uri.href,
         jar  = options.jar,
-        originalCookie  = request.getHeader('cookie'),
         getCookieString = Promise.promisify(jar.getCookieString.bind(jar)),
         setCookieString = Promise.promisify(jar.setCookie.bind(jar));
 
 
-    return Promise.resolve(originalCookie)
-      .then(function (cookie) {
-        if (cookie) {
-          return setCookieString(cookie, href);
-        }
-      })
-      .then(function () {
-        return getCookieString(href);
-      })
+    return getCookieString(href)
       .then(function (cookies) {
         request.setHeader('cookie', cookies);
         return next(request);
