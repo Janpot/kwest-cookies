@@ -1,0 +1,29 @@
+{
+  "name": "kwest-cookies",
+  "version": "0.0.1",
+  "description": "Cookie support for kwest requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "kwest",
+    "cookie"
+  ],
+  "author": "Jan Potoms",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.3.4",
+    "merge-defaults": "^0.2.1",
+    "tough-cookie": "^0.12.1"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "kwest-mock": "^0.1.3",
+    "mocha": "^1.21.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Janpot/kwest-cookies.git"
+  }
+}
