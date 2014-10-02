@@ -19,7 +19,7 @@ function kwestCookies(globalOptions) {
       return next(request);
     }
 
-    var href = request.uri.href,
+    var href = request.getUrl(),
         jar  = options.jar,
         getCookieString = Promise.promisify(jar.getCookieString.bind(jar)),
         setCookieString = Promise.promisify(jar.setCookie.bind(jar));
