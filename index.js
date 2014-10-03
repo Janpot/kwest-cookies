@@ -45,7 +45,9 @@ function kwestCookies(globalOptions) {
         } else {
           setCookiePromise = setCookieString(cookiesToset, href);
         }
-        return setCookiePromise.return(response);
+        return setCookiePromise
+          .catch(function ignore() {})
+          .return(response);
       });
   };
 }
